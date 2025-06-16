@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float, Enum
+from sqlalchemy import Column, Integer, String, Float, Enum, DateTime
+from datetime import datetime, timezone
 from src.models.config.base import Base
 from enum import Enum as PyEnum
 
@@ -27,6 +28,7 @@ class Transactions(Base):
   amount = Column(Float, nullable=False)
   type = Column(Enum(TransactionType), nullable=False)
   category = Column(Enum(TransactionCategory), nullable = False)
+  created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
-  
+

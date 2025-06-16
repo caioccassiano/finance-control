@@ -27,6 +27,18 @@ class DbConnectionHandler:
     if self.__session is None:
       raise Exception("You must call connect_to_db() before using session")
     return self.__session()
+  
+  def __enter__(self):
+    if self.__engine is None:
+        self.connect_to_db()
+    session_maker = sessionmaker(bind=self.__engine)
+    self.__session = session_maker()
+    return self.__session
+
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    self.__session.close()
+
 
 
 
