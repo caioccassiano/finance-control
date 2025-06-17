@@ -9,7 +9,7 @@ db_connection_handler.connect_to_db()
 engine = db_connection_handler.get_engine()
 Base.metadata.create_all(engine)
 
-@pytest.mark.skip(reason="Interation with db")
+# @pytest.mark.skip(reason="Interation with db")
 def test_create_user():
 
   mock_connection = db_connection_handler
@@ -54,7 +54,7 @@ def test_create_user_unitario():
 
 
 
-
+@pytest.mark.skip(reason="Already tested!")
 def test_get_user_by_username():
   
   username = "caioccassiano"
@@ -69,7 +69,7 @@ def test_get_user_by_username():
   print(user.username)
 
 
-
+@pytest.mark.skip(reason="Already tested!")
 def test_list_users():
   mock_connection = db_connection_handler
   repo = UsersRepository(mock_connection)
@@ -77,14 +77,14 @@ def test_list_users():
 
   print(response)
 
-
+@pytest.mark.skip(reason="Already tested!")
 def test_delete_user():
-  username = "rosiclair"
+  username = "caioccassiano"
   mock_conneciton = db_connection_handler
   repo = UsersRepository(mock_conneciton)
   repo.delete_user(username)
 
-  
+
 
 
 

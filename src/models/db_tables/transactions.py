@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Float, Enum, DateTime, ForeignKey
 from datetime import datetime, timezone
 from src.models.config.base import Base
 from enum import Enum as PyEnum
@@ -24,11 +24,16 @@ class Transactions(Base):
   __tablename__= "transactions"
 
   id = Column(Integer, primary_key=True, autoincrement=True)
+  user_id = Column(Integer, ForeignKey("users.id"), nullable= False)
+  account_id = Column(Integer, ForeignKey("accounts.id"), nullable= False)
   description = Column(String, nullable=True, default=None)
   amount = Column(Float, nullable=False)
   type = Column(Enum(TransactionType), nullable=False)
   category = Column(Enum(TransactionCategory), nullable = False)
   created_at = Column(DateTime, default=datetime.now(timezone.utc))
+
+
+  
 
 
 
