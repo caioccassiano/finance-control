@@ -15,6 +15,7 @@ pydantic = "*"
 bcrypt = "*"
 jwt = "*"
 pyjwt = "*"
+email-validator = "*"
 
 [dev-packages]
 
