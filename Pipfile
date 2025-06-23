@@ -13,6 +13,8 @@ pytest = "*"
 python-dotenv = "*"
 pydantic = "*"
 bcrypt = "*"
+jwt = "*"
+pyjwt = "*"
 
 [dev-packages]
 
