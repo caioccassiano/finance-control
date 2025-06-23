@@ -35,6 +35,8 @@ def test_get_account_by_user_id():
 
   print(accounts)
 
+  for account, username in accounts:
+    print(account.saldo, username)
 
   
 

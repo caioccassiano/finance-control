@@ -1,5 +1,6 @@
 from .interfaces.accounts_repository_interface import AccountsRepositoryInterface
 from src.models.db_tables.account import Accounts
+from src.models.db_tables.users import Users
 
 
 class AccountsRepository(AccountsRepositoryInterface):
@@ -27,10 +28,10 @@ class AccountsRepository(AccountsRepositoryInterface):
         raise exception
       
   
-  def get_account_by_user_id(self, user_id) -> list[Accounts]:
+  def get_account_by_user_id(self, user_id) -> list[Accounts, str]:
     with self.__db_connection as db:
       try:
-        accounts = db.query(Accounts).filter(Accounts.user_id == user_id).all()
+        accounts = db.query(Accounts, Users.username).join(Users,Accounts.user_id == Users.id).filter(Accounts.user_id == user_id).all()
         return accounts
       except Exception as excpetion:
         db.rollback()

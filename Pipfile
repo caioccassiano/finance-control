@@ -12,6 +12,7 @@ flask-migrate = "*"
 pytest = "*"
 python-dotenv = "*"
 pydantic = "*"
+bcrypt = "*"
 
 [dev-packages]
 
