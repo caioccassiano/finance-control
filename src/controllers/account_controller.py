@@ -1,8 +1,9 @@
 from src.models.repositories.interfaces.accounts_repository_interface import AccountsRepositoryInterface
-from src.drivers.jwt_handler import JwtHandler
-from src.models.schemas.accounts_schemas import AccountOut, AccountUpdateBalance
+from src.models.schemas.accounts_schemas import AccountOut
+from .interfaces.account_controller_interface import CreateAccountControllerInterface, ListAccountsByUserIdControllerInterface, DeleteAccountControllerInterface
 
-class CreateAccountController():
+
+class CreateAccountController(CreateAccountControllerInterface):
   def __init__(self, account_repository: AccountsRepositoryInterface ):
     self.__account_repo = account_repository
 
@@ -24,7 +25,7 @@ class CreateAccountController():
     )
 
 
-class ListAccountsByUserIdController():
+class ListAccountsByUserIdController(ListAccountsByUserIdControllerInterface):
   def __init__(self, account_repository: AccountsRepositoryInterface):
     self.__account_repo = account_repository
 
@@ -42,7 +43,7 @@ class ListAccountsByUserIdController():
     ]
   
 
-class DeleteAccountController():
+class DeleteAccountController(DeleteAccountControllerInterface):
   def __init__(self, account_repository: AccountsRepositoryInterface ):
     self.__account_repo = account_repository
 
