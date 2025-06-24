@@ -3,10 +3,11 @@ from src.drivers.password_handler import PasswordHandler
 from src.models.schemas.users_schemas import CreateUser, UserOut
 from pydantic import ValidationError
 from src.drivers.jwt_handler import JwtHandler
+from .interfaces.users_controller_interface import UsersCreateControllerInterface, LoginCreatorControllerInterface, UserDeleteControllerInterface
 
 
 
-class UsersCreateController():
+class UsersCreateController(UsersCreateControllerInterface):
   def __init__(self, repository: UsersRepositoryInterface):
     self.__repository = repository
     self.__password_handler = PasswordHandler()
@@ -55,7 +56,7 @@ class UsersCreateController():
     )
 
 
-class LoginCreator():
+class LoginCreatorController(LoginCreatorControllerInterface):
   def __init__(self, repository:UsersRepositoryInterface):
     self.__repository = repository
     self.__jwt_handler = JwtHandler()
@@ -94,12 +95,28 @@ class LoginCreator():
     }
 
 
-class UserDelete():
+class UserDeleteController(UserDeleteControllerInterface):
   def __init__(self, repository:UsersRepositoryInterface)-> None:
     self.__repository = repository
 
-  def delete_user(self, username):
+  def delete_user(self, user_id:int, username:str):
+    user = self.__get_user_by_username(username)
+    self.validate_user_with_user_id(user, user_id)
     return self.__repository.delete_user(username)
+
+
+  def __get_user_by_username(self, username):
+    user = self.__repository.get_user_by_username(username)
+    if not user:
+      raise Exception("User does not exist!")
+    return user
+  
+  def validate_user_with_user_id(self, user, user_id)->bool:
+    if user.id != user_id:
+      raise Exception("You can't delete another user")
+    return True
+  
+
   
 
 
