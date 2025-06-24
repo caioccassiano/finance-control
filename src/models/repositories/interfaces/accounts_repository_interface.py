@@ -16,4 +16,7 @@ class AccountsRepositoryInterface(ABC):
   @abstractmethod
   def update_balance(self, account_id, amount): pass
 
+  @abstractmethod
+  def get_account_by_id():pass
+
 

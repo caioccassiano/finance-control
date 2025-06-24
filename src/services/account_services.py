@@ -2,7 +2,7 @@ from src.models.db_tables.transactions import TransactionType
 
 
 class AccountService:
-  def update_balance(self, account:int, amount:float, type:TransactionType):
+  def update_balance(self, account, amount:float, type:TransactionType):
     if type == TransactionType.ENTRADA:
       account.saldo += amount
     elif type == TransactionType.SAIDA:

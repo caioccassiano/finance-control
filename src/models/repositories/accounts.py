@@ -38,13 +38,13 @@ class AccountsRepository(AccountsRepositoryInterface):
         raise excpetion
       
 
-  def update_balance(self, account_id: int, amount:float)-> bool:
+  def update_balance(self, account_id: int, new_balance:float)-> bool:
     with self.__db_connection as db:
       try:
         account = db.query(Accounts).filter(Accounts.id == account_id).first()
         if account is None:
           raise Exception("Account does not existis")
-        account.saldo += amount
+        account.saldo = new_balance
         db.commit()
         return True
       except Exception as exception:
@@ -65,7 +65,18 @@ class AccountsRepository(AccountsRepositoryInterface):
         db.rollback()
         raise e
       
-      
+
+  def get_account_by_id(self, account_id):
+    with self.__db_connection as db:
+      try:
+        account = db.query(
+          Accounts, Users.username).join(
+            Users, Accounts.user_id == Users.id
+          ).filter(Accounts.id == account_id).first()
+        return account
+      except Exception as e:
+        db.rollback()
+        raise e   
     
       
     
