@@ -94,4 +94,12 @@ class LoginCreator():
     }
 
 
+class UserDelete():
+  def __init__(self, repository:UsersRepositoryInterface)-> None:
+    self.__repository = repository
+
+  def delete_user(self, username):
+    return self.__repository.delete_user(username)
   
+
+
