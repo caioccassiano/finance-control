@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from .transactions_controller import CreateTransactionController, ListTransactionsByUser
+from .transactions_controller import CreateTransactionController, ListTransactionsByUserController
 from src.models.schemas.transaction_schemas import TransactionCreateSchema, TransactionResponseSchema
 from src.models.db_tables.transactions import TransactionType, TransactionCategory
 

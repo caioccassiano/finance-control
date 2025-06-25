@@ -2,8 +2,9 @@ from src.models.repositories.interfaces.transactions_repository import Transacti
 from src.models.repositories.interfaces.accounts_repository_interface import AccountsRepositoryInterface
 from src.models.schemas.transaction_schemas import TransactionCreateSchema, TransactionResponseSchema
 from src.services.account_services import AccountService
+from .interfaces.transactions_controllers_interface import CreateTransactionControllerInterface, ListTransactionsControllerInterface
 
-class CreateTransactionController():
+class CreateTransactionController(CreateTransactionControllerInterface):
   def __init__(self, 
                trans_repository:TransactionRepositoryInterface,
                acc_repository:AccountsRepositoryInterface
@@ -60,7 +61,7 @@ class CreateTransactionController():
     )
   
 
-class ListTransactionsByUser():
+class ListTransactionsByUserController(ListTransactionsControllerInterface):
   def __init__(self, trans_repository:TransactionRepositoryInterface):
     self.__trans_repository = trans_repository
     
