@@ -18,7 +18,7 @@ class CreateAccountController(CreateAccountControllerInterface):
     account_id = new_account.id
     account, username = self.__account_repo.get_account_by_id(account_id)
     return AccountOut(
-      user_id = account.id,
+      user_id = account.user_id,
       saldo = account.saldo,
       created_at = account.created_at,
       username = username

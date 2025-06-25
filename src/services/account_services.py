@@ -3,12 +3,15 @@ from src.models.db_tables.transactions import TransactionType
 
 class AccountService:
   def update_balance(self, account, amount:float, type:TransactionType):
+
+    balance = account.saldo
+
     if type == TransactionType.ENTRADA:
-      account.saldo += amount
+      balance += amount
     elif type == TransactionType.SAIDA:
-      account.saldo -= amount
+      balance -= amount
     else:
       raise Exception ("Invalid transaction operation")
-    return account
+    return balance
 
 

@@ -25,7 +25,7 @@ class TransactionRepository(TransactionRepositoryInterface):
         raise e
       
 
-  def get_transaction_by_user_id(self, user_id):
+  def get_transaction_by_user_id(self, user_id)->list[Transactions]:
     with self.__db_connection as db:
       try:
         transactions = db.query(Transactions).filter(
