@@ -59,6 +59,40 @@ class CreateTransactionController():
       created_at = new_transaction.created_at
     )
   
+
+class ListTransactionsByUser():
+  def __init__(self, trans_repository:TransactionRepositoryInterface):
+    self.__trans_repository = trans_repository
+    
+
+  def list_transactions_by_user(self, user_id):
+    transactions = self.__get_transactions(user_id)
+    formatted_response = self.__format_response(transactions)
+    return formatted_response
+
+  def __get_transactions(self, user_id)->list:
+    try:
+      transactions = self.__trans_repository.get_transaction_by_user_id(user_id)
+      return transactions
+    except Exception as e:
+      raise e
+  
+
+  def __format_response(self, transactions):
+    return [
+      TransactionResponseSchema(
+      user_id= transaction.user_id,
+      account_id = transaction.account_id,
+      description = transaction.description,
+      amount = transaction.amount,
+      type = transaction.type,
+      category = transaction.category,
+      id = transaction.id,
+      created_at = transaction.created_at
+    ) 
+    for transaction in transactions
+    ]
+    
     
     
 

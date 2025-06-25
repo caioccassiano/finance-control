@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
-from .transactions_controller import CreateTransactionController
-from src.models.schemas.transaction_schemas import TransactionCreateSchema
+from .transactions_controller import CreateTransactionController, ListTransactionsByUser
+from src.models.schemas.transaction_schemas import TransactionCreateSchema, TransactionResponseSchema
 from src.models.db_tables.transactions import TransactionType, TransactionCategory
 
 class TestCreateTransactionController(unittest.TestCase):
@@ -44,3 +44,43 @@ class TestCreateTransactionController(unittest.TestCase):
     mock_acc_repo.update_balance.assert_called_once()
     self.assertEqual(result.account_id, 1)
     self.assertEqual(result.amount, 100.0)
+
+
+class TestListTransactionsByUser(unittest.TestCase):
+  def setUp(self):
+    self.mock_repo = MagicMock()
+    self.controller = ListTransactionsByUser(self.mock_repo)
+
+  def test_list_transactions_by_user_success(self):
+    transaction_1 = MagicMock(
+            user_id=1,
+            account_id=1,
+            description='Depósito',
+            amount=100.0,
+            type='entrada',
+            category='salário',
+            id=1,
+            created_at='2024-06-25T10:00:00'
+        )
+    transaction_2 = MagicMock(
+            user_id=1,
+            account_id=1,
+            description='Transferência',
+            amount=50.0,
+            type='saida',
+            category='lazer',
+            id=2,
+            created_at='2024-06-25T11:00:00'
+        )
+      
+    self.mock_repo.get_transaction_by_user_id.return_value = [transaction_1, transaction_2]
+
+    result = self.controller.list_transactions_by_user(user_id = 1)
+
+    print(result)
+
+    self.assertIsInstance(result, list)
+    self.assertEqual(len(result), 2)
+    self.assertIsInstance(result[0], TransactionResponseSchema)
+    self.assertEqual(result[0].description, 'Depósito')
+    self.assertEqual(result[1].amount, 50.0)
