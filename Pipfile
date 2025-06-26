@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 sqlalchemy = "*"
-flask = "*"
 flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
@@ -16,6 +15,7 @@ bcrypt = "*"
 jwt = "*"
 pyjwt = "*"
 email-validator = "*"
+flask = "*"
 
 [dev-packages]
 
