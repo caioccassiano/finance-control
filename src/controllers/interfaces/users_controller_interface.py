@@ -16,7 +16,7 @@ class LoginCreatorControllerInterface(ABC):
 class UserDeleteControllerInterface(ABC):
 
   @abstractmethod
-  def delete_user(self, username): pass
+  def delete_user(self, user_id:int, username:str): pass
 
 
 

@@ -62,7 +62,7 @@ class LoginCreatorController(LoginCreatorControllerInterface):
     self.__jwt_handler = JwtHandler()
     self.__password_handler = PasswordHandler()
 
-  def login(self, username, password)-> dict:
+  def login(self, username:str, password:str)-> dict:
     user = self.__find_user(username)
     if not user:
       raise Exception("User not found!")
@@ -78,8 +78,12 @@ class LoginCreatorController(LoginCreatorControllerInterface):
   def __find_user(self, username:str):
     return self.__repository.get_user_by_username(username)
   
-  def __check_password(self, password, hashed_password):
-    self.__password_handler.check_password(password, hashed_password )
+  def __check_password(self, password, hashed_password)->bool:
+    try:
+      self.__password_handler.check_password(password, hashed_password )
+      return True
+    except Exception as e:
+      raise e
   
   def __create_user_token(self, user_id:int)->str:
     payload = {"user_id": user_id}
@@ -101,7 +105,7 @@ class UserDeleteController(UserDeleteControllerInterface):
 
   def delete_user(self, user_id:int, username:str):
     user = self.__get_user_by_username(username)
-    self.validate_user_with_user_id(user, user_id)
+    self.__validate_user_with_user_id(user, user_id)
     return self.__repository.delete_user(username)
 
 
@@ -111,7 +115,7 @@ class UserDeleteController(UserDeleteControllerInterface):
       raise Exception("User does not exist!")
     return user
   
-  def validate_user_with_user_id(self, user, user_id)->bool:
+  def __validate_user_with_user_id(self, user, user_id)->bool:
     if user.id != user_id:
       raise Exception("You can't delete another user")
     return True
