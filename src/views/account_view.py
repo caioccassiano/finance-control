@@ -13,7 +13,7 @@ class CreateAccountView(ViewInterface):
 
   def handle(self, http_request:HttpRequest)->HttpResponse:
     user_id = http_request.params.get("user_id")
-    headers_user_id = http_request.get("uid")
+    headers_user_id = http_request.headers.get("uid")
 
     self.__validate_inputs(user_id, headers_user_id)
     self.__verify_user_auth(user_id, headers_user_id)
@@ -37,6 +37,7 @@ class CreateAccountView(ViewInterface):
 class ListAccountsByUserView(ViewInterface):
   def __init__(self, controller: ListAccountsByUserIdControllerInterface):
     self.__controller = controller
+    self.__verify_user = VerifyUserAuth()
 
   def handle(self, http_request:HttpRequest)->HttpResponse:
     user_id = http_request.params.get("user_id")
