@@ -36,7 +36,7 @@ class CreateTransactionView(ViewInterface):
 
 
 
-class ListTransactionsByUser(ViewInterface):
+class ListTransactionsByUserView(ViewInterface):
   def __init__(self, controller: ListTransactionsControllerInterface)-> None:
     self.__controller = controller
     self.__verify_user = VerifyUserAuth()
