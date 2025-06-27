@@ -22,7 +22,7 @@ class UsersCreateController(UsersCreateControllerInterface):
       "password": hashed_password
     }
     new_user = self.__create_user_in_db(user_data)
-    return self.__formated_response(new_user)
+    return self.__formated_response(new_user).model_dump()
 
   def __validate_body(self, data:dict):
     try:
@@ -38,7 +38,6 @@ class UsersCreateController(UsersCreateControllerInterface):
   def __create_user_in_db(self, user_data):
     try:
       new_user = self.__repository.create_user(
-        self,
         username= user_data["username"],
         email= user_data["email"],
         password= user_data["password"]
@@ -51,8 +50,7 @@ class UsersCreateController(UsersCreateControllerInterface):
     return UserOut(
       id = new_user["id"],
       username= new_user["username"],
-      email = new_user["email"],
-      created_at= new_user["created_at"]
+      email = new_user["email"]
     )
 
 

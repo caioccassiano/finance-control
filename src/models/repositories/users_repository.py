@@ -18,8 +18,8 @@ class UsersRepository(UsersRepositoryInterface):
         db.commit()
         return {
           "id": new_user.id,
-          "username": new_user.username
-
+          "username": new_user.username,
+          "email": new_user.email,
         }
       except Exception as exception:
         db.rollback()
