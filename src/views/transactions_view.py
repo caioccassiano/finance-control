@@ -56,7 +56,7 @@ class ListTransactionsByUserView(ViewInterface):
   def __validate_inputs(self, user_id, headers_user_id)->None:
     if not(user_id and headers_user_id):
       raise Exception("Missing user_id or headers_user_id")
-    if not (isinstance(user_id,int) and isinstance(headers_user_id, int)):
+    if int(headers_user_id) != int(user_id):
       raise Exception("IDs must be integers")
   
   def __verify_user_auth(self, user_id:int, headers_user_id:int)->None:

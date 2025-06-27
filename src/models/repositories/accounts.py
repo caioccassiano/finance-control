@@ -18,10 +18,10 @@ class AccountsRepository(AccountsRepositoryInterface):
         db.add(new_account)
         db.commit()
         return {
-          "New account":{
-            "user_id": new_account.user_id,
-            "account_id": new_account.id
-          }
+          "id": new_account.id,
+          "user_id":new_account.user_id,
+          "saldo": new_account.saldo,
+          "created_at":new_account.created_at
         }
       except Exception as exception:
         db.rollback()
@@ -73,7 +73,12 @@ class AccountsRepository(AccountsRepositoryInterface):
           Accounts, Users.username).join(
             Users, Accounts.user_id == Users.id
           ).filter(Accounts.id == account_id).first()
+          
+        if account is None:
+          return None
+        
         return account
+    
       except Exception as e:
         db.rollback()
         raise e   

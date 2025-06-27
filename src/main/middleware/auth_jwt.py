@@ -9,7 +9,7 @@ def auth_verify_jwt(f):
   def wrapper(*args, **kwargs):
     jwt_handler = JwtHandler()
     raw_token = request.headers.get("Authorization")
-    user_id = request.headers.get("uid")
+    user_id = int(request.view_args.get("user_id"))
 
     if not raw_token or not user_id:
       raise Exception("Invalid inputs")

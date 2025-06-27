@@ -101,23 +101,8 @@ class UserDeleteController(UserDeleteControllerInterface):
   def __init__(self, repository:UsersRepositoryInterface)-> None:
     self.__repository = repository
 
-  def delete_user(self, user_id:int, username:str):
-    user = self.__get_user_by_username(username)
-    self.__validate_user_with_user_id(user, user_id)
-    return self.__repository.delete_user(username)
-
-
-  def __get_user_by_username(self, username):
-    user = self.__repository.get_user_by_username(username)
-    if not user:
-      raise Exception("User does not exist!")
-    return user
-  
-  def __validate_user_with_user_id(self, user, user_id)->bool:
-    if user.id != user_id:
-      raise Exception("You can't delete another user")
-    return True
-  
+  def delete_user(self, user_id:int):
+    return self.__repository.delete_user(user_id=user_id)
 
   
 

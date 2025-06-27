@@ -21,7 +21,7 @@ def login_user():
   return jsonify(http_response.body), http_response.status_code
 
 
-@users_bank_routes_bp.route("/bank/user/delete", methods=["DELETE"])
+@users_bank_routes_bp.route("/bank/user/delete/<user_id>", methods=["DELETE"])
 @auth_verify_jwt
 def delete_user(user_id):
   http_request = HttpRequest(

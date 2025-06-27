@@ -11,11 +11,11 @@ class CreateAccountController(CreateAccountControllerInterface):
     new_account = self.__account_repo.create_account(user_id)
     if not user_id:
       raise Exception ("User does not exist")
-    formatted_response = self.__format_response(new_account)
+    formatted_response = self.__format_response(new_account).model_dump()
     return formatted_response
   
   def __format_response(self, new_account)->AccountOut:
-    account_id = new_account.id
+    account_id = new_account["id"]
     account, username = self.__account_repo.get_account_by_id(account_id)
     return AccountOut(
       user_id = account.user_id,

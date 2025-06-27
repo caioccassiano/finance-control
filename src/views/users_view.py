@@ -47,19 +47,19 @@ class UsersDeleteView(ViewInterface):
 
   def handle(self, http_request: HttpRequest)-> HttpResponse:
     user_id = http_request.params.get("user_id")
-    username = http_request.body.get("username")
     headers_user_id = http_request.headers.get("uid")
+    token_uid = http_request.token_infos.get("user_id")
 
-    self.__validate_inputs(user_id, username, headers_user_id)
-    response = self.__controller.delete_user(user_id, username)
+    self.__validate_inputs(token_uid, headers_user_id)
+    response = self.__controller.delete_user(user_id=user_id)
     return HttpResponse(
       body={"data": response}, status_code=200
     )
 
-  def __validate_inputs(self, user_id, username, headers_user_id:any)->None:
+  def __validate_inputs(self, user_id,  headers_user_id:any)->None:
     if (
       not user_id
-      or not username
+      or not headers_user_id
       or int(headers_user_id) != int(user_id)
     ):
       raise Exception("Invalid inputs")

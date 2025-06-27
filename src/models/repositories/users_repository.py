@@ -45,10 +45,10 @@ class UsersRepository(UsersRepositoryInterface):
         return None
       
   
-  def delete_user(self, username):
+  def delete_user(self, user_id):
     with self.__db_connection as db:
       
-        user = db.query(Users).filter(Users.username == username).first()
+        user = db.query(Users).filter(Users.id == user_id).first()
         if user is None:
           raise Exception("User does not existis")
         try:
