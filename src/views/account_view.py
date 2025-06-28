@@ -42,24 +42,25 @@ class ListAccountsByUserView(ViewInterface):
 
   def handle(self, http_request:HttpRequest)->HttpResponse:
     user_id = http_request.params.get("user_id")
-    headers_user_id = http_request.headers.get("uid")
+    token_uid = http_request.token_infos.get("user_id")
 
-    self.__validate_inputs(user_id, headers_user_id)
-    self.__verify_user_auth(user_id, headers_user_id)
+    self.__validate_inputs(user_id, token_uid)
+    self.__verify_user_auth(user_id, token_uid)
 
     response = self.__controller.list_account(user_id)
     return HttpResponse(
       body={"data": response}, status_code=200
     )
 
-  def __validate_inputs(self, user_id, headers_user_id)->None:
-    if not(user_id and headers_user_id):
-      raise Exception("Missing user_id or headers_user_id")
-    if not (isinstance(user_id,int) and isinstance(headers_user_id, int)):
+  def __validate_inputs(self, user_id, token_uid)->None:
+    user_id = int(user_id)
+    if not(user_id and token_uid):
+      raise Exception("Missing user_id or token_uid")
+    if not (isinstance(user_id,int) and isinstance(token_uid, int)):
       raise Exception("IDs must be integers")
   
-  def __verify_user_auth(self, user_id:int, headers_user_id:int)->None:
-    self.__verify_user.verify_user_auth(user_id, headers_user_id)
+  def __verify_user_auth(self, user_id:int, token_uid:int)->None:
+    self.__verify_user.verify_user_auth(user_id, token_uid)
 
 
 class UserDeleteAccountView(ViewInterface):
@@ -70,22 +71,24 @@ class UserDeleteAccountView(ViewInterface):
   def handle(self, http_request: HttpRequest)->HttpResponse:
     user_id = http_request.params.get("user_id")
     account_id = http_request.params.get("account_id")
-    headers_user_id = http_request.headers.get("uid")
+    token_uid = http_request.token_infos.get("user_id")
 
-    self.__validate_inputs(user_id, account_id, headers_user_id)
-    self.__verify_user.verify_user_auth(user_id, headers_user_id)
+    self.__validate_inputs(user_id, account_id, token_uid)
+    self.__verify_user.verify_user_auth(user_id, token_uid)
     
-    response = self.__controller.delete(user_id, account_id)
+    response = self.__controller.delete(account_id)
 
     return HttpResponse(
-      body=response, status_code=200
+      body=response, status_code=204
     )
 
 
-  def __validate_inputs(self, user_id, account_id, headers_user_id)->None:
-    if not user_id or not headers_user_id or not account_id:
+  def __validate_inputs(self, user_id, account_id, token_uid)->None:
+    user_id = int(user_id)
+    account_id = int(account_id)
+    if not user_id or not token_uid or not account_id:
       raise Exception("Missing informations")
-    if not (isinstance(user_id,int) or not isinstance(headers_user_id, int or not isinstance(account_id, int))):
+    if not (isinstance(user_id,int) or not isinstance(token_uid, int or not isinstance(account_id, int))):
       raise Exception("IDs must be integers")
     
 

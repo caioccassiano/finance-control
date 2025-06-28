@@ -24,8 +24,8 @@ class Transactions(Base):
   __tablename__= "transactions"
 
   id = Column(Integer, primary_key=True, autoincrement=True)
-  user_id = Column(Integer, ForeignKey("users.id"), nullable= False)
-  account_id = Column(Integer, ForeignKey("accounts.id"), nullable= False)
+  user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable= False)
+  account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE"), nullable= False)
   description = Column(String, nullable=True, default=None)
   amount = Column(Float, nullable=False)
   type = Column(Enum(TransactionType), nullable=False)

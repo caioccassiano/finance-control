@@ -25,10 +25,8 @@ def login_user():
 @auth_verify_jwt
 def delete_user(user_id):
   http_request = HttpRequest(
-    body=request.json,
     params={"user_id": user_id},
     token_infos = g.token_informations,
-    headers = request.headers
   )
   http_response = user_delete_composer().handle(http_request)
   return jsonify(http_response.body), http_response.status_code

@@ -31,14 +31,18 @@ class ListAccountsByUserIdController(ListAccountsByUserIdControllerInterface):
 
   def list_account(self, user_id):
     accounts= self.__account_repo.get_account_by_user_id(user_id)
+    formatted_response = self.__format_response(accounts)
+    return formatted_response
 
+
+  def __format_response (self, accounts)->AccountOut:
     return [
       AccountOut(
         user_id = account.id,
         saldo = account.saldo,
         created_at = account.created_at,
         username = username
-      )
+      ).model_dump()
       for account, username in accounts
     ]
   
@@ -47,12 +51,7 @@ class DeleteAccountController(DeleteAccountControllerInterface):
   def __init__(self, account_repository: AccountsRepositoryInterface ):
     self.__account_repo = account_repository
 
-  def delete(self, user_id, account_id):
-    account, = self.__account_repo.get_account_by_id(account_id)
-    if account is None:
-      raise Exception("Account does not exist")
-    if account.user_id != user_id:
-      raise Exception("You can't delete this account")
+  def delete(self, account_id):
     self.__account_repo.delete_account(account_id)
     return True
   
