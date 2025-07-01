@@ -16,6 +16,7 @@ jwt = "*"
 pyjwt = "*"
 email-validator = "*"
 flask = "*"
+flasgger = "*"
 
 [dev-packages]
 
