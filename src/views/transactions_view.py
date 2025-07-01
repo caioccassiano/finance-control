@@ -48,24 +48,24 @@ class ListTransactionsByUserView(ViewInterface):
 
   def handle(self, http_request: HttpRequest)-> HttpResponse:
     user_id = http_request.params.get("user_id")
-    headers_user_id = http_request.headers.get("uid")
+    token_uid = http_request.token_infos.get("user_id")
 
-    self.__validate_inputs(user_id, headers_user_id)
-    self.__verify_user_auth(user_id, headers_user_id)
+    self.__validate_inputs(user_id, token_uid)
+    self.__verify_user_auth(user_id, token_uid)
 
     response = self.__controller.list_transactions_by_user(user_id)
     return HttpResponse(
       body={"data": response}, status_code=200
     )
 
-  def __validate_inputs(self, user_id, headers_user_id)->None:
-    if not(user_id and headers_user_id):
-      raise Exception("Missing user_id or headers_user_id")
-    if int(headers_user_id) != int(user_id):
+  def __validate_inputs(self, user_id, token_uid)->None:
+    if not(user_id and token_uid):
+      raise Exception("Missing user_id or token_uid")
+    if int(token_uid) != int(user_id):
       raise Exception("IDs must be integers")
   
-  def __verify_user_auth(self, user_id:int, headers_user_id:int)->None:
-    self.__verify_user.verify_user_auth(user_id, headers_user_id)
+  def __verify_user_auth(self, user_id:int, token_uid:int)->None:
+    self.__verify_user.verify_user_auth(user_id, token_uid)
 
 
 

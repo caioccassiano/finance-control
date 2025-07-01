@@ -6,7 +6,7 @@ class TransactionCreateSchema(BaseModel):
   user_id: int
   account_id: int
   description: Optional[str] = None
-  amount: int
+  amount: float
   type: str
   category: str
 

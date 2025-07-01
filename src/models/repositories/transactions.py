@@ -19,6 +19,7 @@ class TransactionRepository(TransactionRepositoryInterface):
         )
         db.add(new_transaction)
         db.commit()
+        db.refresh(new_transaction)
         return new_transaction
       except Exception as e:
         db.rollback()

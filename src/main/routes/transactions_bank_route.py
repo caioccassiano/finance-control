@@ -19,3 +19,15 @@ def create_transaction(user_id, account_id):
   return jsonify(http_response.body), http_response.status_code
 
 
+
+@transactions_bank_routes_bp.route("/bank/users/<user_id>/get_transactions", methods = ["GET"])
+@auth_verify_jwt
+def get_transactions_by_user(user_id):
+  http_request = HttpRequest(
+    params = {"user_id": user_id},
+    token_infos=g.token_informations 
+  )
+
+  http_response = list_transactions_composer().handle(http_request=http_request)
+
+  return jsonify(http_response.body), http_response.status_code

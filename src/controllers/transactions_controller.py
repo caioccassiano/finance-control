@@ -15,16 +15,18 @@ class CreateTransactionController(CreateTransactionControllerInterface):
 
   def create_transaction(self, data):
     validated_data = self.__validate_body(data=data)
-    new_transaction = self.__create_transaction(validated_data)
-    new_balance = self.__create_new_balance(new_transaction)
     account_id = validated_data.account_id
+    new_transaction = self.__create_transaction(validated_data)
+    new_balance = self.__create_new_balance(new_transaction, account_id)
     self.__update_balance(account_id, new_balance)
-    formatted_response = self.__format_response(new_transaction)
+    formatted_response = self.__format_response(new_transaction).model_dump()
     return formatted_response
 
 
   
   def __validate_body(self, data):
+    data['type']     = data['type'].upper()
+    data['category'] = data['category'].upper()
     try:
       validated_data = TransactionCreateSchema(**data)
       return validated_data
@@ -38,11 +40,13 @@ class CreateTransactionController(CreateTransactionControllerInterface):
     except Exception as e:
       raise e
     
-  def __create_new_balance(self, new_transaction):
-    account = self.__acc_repository.get_account_by_id(new_transaction.account_id)
+  def __create_new_balance(self, new_transaction, account_id):
+    account_tupple = self.__acc_repository.get_account_by_id(account_id)
+    account = account_tupple[0]
+    saldo = account.saldo
     amount = new_transaction.amount
     type = new_transaction.type
-    new_balance = self.__service.update_balance(account, amount, type)
+    new_balance = self.__service.update_balance(saldo, amount, type)
     return new_balance
   
   def __update_balance(self, account_id:int, new_balance:float):
@@ -90,7 +94,7 @@ class ListTransactionsByUserController(ListTransactionsControllerInterface):
       category = transaction.category,
       id = transaction.id,
       created_at = transaction.created_at
-    ) 
+    ).model_dump()
     for transaction in transactions
     ]
     

@@ -1,10 +1,12 @@
 from src.models.db_tables.transactions import TransactionType
+from src.models.db_tables.account import Accounts
+
 
 
 class AccountService:
-  def update_balance(self, account, amount:float, type:TransactionType):
+  def update_balance(self, saldo:float, amount:float, type:TransactionType):
 
-    balance = account.saldo
+    balance = saldo
 
     if type == TransactionType.ENTRADA:
       balance += amount
