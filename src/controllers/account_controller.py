@@ -36,6 +36,7 @@ class ListAccountsByUserIdController(ListAccountsByUserIdControllerInterface):
 
 
   def __format_response (self, accounts)->AccountOut:
+    account_len = len(accounts)
     return [
       AccountOut(
         user_id = account.id,
