@@ -13,8 +13,8 @@ def create_transaction(user_id, account_id):
     With user_id & account_id as path parameters. The remaining required data must be provided in the request body
 
   ---
-  summary: Cria uma nova transação para a conta do usuário.
-  description: Cria uma transação vinculada à conta de um usuário. Campos `type` e `category` são enums e aceitam apenas valores específicos.
+  summary: Create a new transaction
+  description: "Creates a new transaction for a user's account. Requires a valid JWT token in the Authorization header."
   tags:
     - Transactions
   security:
@@ -28,17 +28,17 @@ def create_transaction(user_id, account_id):
       name: user_id
       required: true
       type: integer
-      description: "ID do usuário responsável pela transação."
+      description: "ID of the user performing the transaction."
     - in: path
       name: account_id
       required: true
       type: integer
-      description: "ID da conta onde a transação será registrada."
+      description: "ID of the account where the transaction will be registered."
     - in: header
       name: Authorization
       required: true
       type: string
-      description: "JWT token com prefixo Bearer. Exemplo: Bearer eyJhbGciOiJI..."
+      description: "JWT token with Bearer prefix. Example: Bearer eyJhbGciOiJI..."
     - in: body
       name: body
       required: true
@@ -51,29 +51,59 @@ def create_transaction(user_id, account_id):
         properties:
           amount:
             type: number
-            example: 250.0
-            description: Valor da transação.
+            example: 250.00
+            description: Transaction amount.
           type:
             type: string
             enum: [entrada, saida]
             example: entrada
-            description: "Tipo da transação. Valores possíveis: `entrada` (receita), `saida` (despesa)."
+            description: "Transaction type. Allowed values: 'entrada' (income), 'saida' (expense)."
           category:
             type: string
             enum: [lazer, saude, alimentacao, outros, transporte, educacao, moradia]
             example: outros
-            description: "Categoria da transação. Valores possíveis: `lazer`, `saude`, `alimentacao`, `outros`, `transporte`, `educacao`, `moradia`."
+            description: "Transaction category. Allowed values: 'lazer', 'saude', 'alimentacao', 'outros', 'transporte', 'educacao', 'moradia'."
           description:
             type: string
-            example: Salário de Julho
-            description: "Descrição opcional para a transação."
+            example: Salary for July
+            description: Optional transaction description.
   responses:
     201:
-      description: Transação criada com sucesso.
+      description: Transaction successfully created
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 13
+              user_id:
+                type: integer
+                example: 8
+              account_id:
+                type: integer
+                example: 7
+              amount:
+                type: number
+                example: 1250.00
+              type:
+                type: string
+                example: entrada
+              category:
+                type: string
+                example: outros
+              description:
+                type: string
+                example: Salary for July
+              created_at:
+                type: string
+                example: "Wed, 02 Jul 2025 15:37:12 GMT"
     400:
-      description: Dados inválidos.
+      description: Invalid input data
     401:
-      description: Não autorizado (token inválido ou ausente).
+      description: Unauthorized (missing or invalid token)
   """
   http_request = HttpRequest(
     body = request.json,
